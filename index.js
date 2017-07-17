@@ -4,6 +4,6 @@ const
 
 app.use(express.static('app'))
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log('Welcome App is running.💩')
 })
