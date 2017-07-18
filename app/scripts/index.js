@@ -118,11 +118,15 @@ angular.module('welcomeApp', [])
       controller: ['$scope', function($scope) {
         $scope.enterPicture = function() {
           console.log('💩')
+          $scope.state.showWelcome = false
+          $scope.state.showCapture = true
           Webcam.snap(function(data_uri) {
             //alert(data_uri)
+            $scope.camera.picture = data_uri
+            $scope.state.showWelcome = false
+            $scope.state.showCapture = true
             $scope.camera.showCamera = false
             $scope.camera.showPicture = true
-            $scope.camera.picture = data_uri
           })
         }
       }]
