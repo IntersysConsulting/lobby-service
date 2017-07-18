@@ -11,7 +11,8 @@ angular.module('welcomeApp', [])
       showWelcome: true,
       showPictureScreen: false,
       showCapture: false,
-      showFinalResult: false
+      showFinalResult: false,
+      showLoading: false
     }
 
     _self.saveInfo = function () {
@@ -119,11 +120,13 @@ angular.module('welcomeApp', [])
         $scope.enterPicture = function() {
           console.log('💩')
           $scope.state.showWelcome = false
-          $scope.state.showCapture = true
+          $scope.state.showLoading = true
+          // TODO: display loading...
           Webcam.snap(function(data_uri) {
             //alert(data_uri)
+            // TODO: remove loading...
             $scope.camera.picture = data_uri
-            $scope.state.showWelcome = false
+            $scope.state.showLoading = false
             $scope.state.showCapture = true
             $scope.camera.showCamera = false
             $scope.camera.showPicture = true
