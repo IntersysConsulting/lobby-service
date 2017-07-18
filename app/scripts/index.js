@@ -91,6 +91,12 @@ angular.module('welcomeApp', [])
           $scope.state.showCapture = false
           $scope.state.showPictureScreen = true
         },
+        $scope.returnIntro = function() {
+          console.log('💩')
+          $scope.state.showWelcome = true
+          $scope.state.showPictureScreen = false
+          $scope.state.showCapture = false
+        },
         $scope.capturePic = function () {
           Webcam.snap(function(data_uri) {
             $scope.camera.showCamera = false
