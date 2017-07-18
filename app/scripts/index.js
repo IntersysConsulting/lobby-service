@@ -125,6 +125,7 @@ angular.module('welcomeApp', [])
           Webcam.snap(function(data_uri) {
             //alert(data_uri)
             // TODO: remove loading...
+            alert(data_uri)
             $scope.camera.picture = data_uri
             $scope.state.showLoading = false
             $scope.state.showCapture = true
