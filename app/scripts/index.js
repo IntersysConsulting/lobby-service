@@ -39,9 +39,7 @@ angular.module('welcomeApp', [])
         Webcam.set({
           width: 480,
           height: 480,
-          image_format: 'jpeg',
-          jpeg_quality: 90,
-          fps: 45
+          mandatory: { facingMode: { exact: "user" } }
         })
         Webcam.attach('#my_camera')
       },
@@ -64,7 +62,7 @@ angular.module('welcomeApp', [])
       }]
     }
   })
-  .directive('myForm', function() {
+  .directive('myForm', ['requestService', function(requestService) {
     return {
       restric: 'E',
       scope: {
@@ -77,6 +75,34 @@ angular.module('welcomeApp', [])
       controller: ['$scope', function ($scope) {
         $scope.saveInfo = function() {
           // TODO: saving data...
+          const PDF = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: 'credit-card'
+          })
+
+          PDF.rect(1, 1, 84, 52)
+          PDF.text($scope.register.nameText, 10, 10)
+          PDF.text($scope.register.emailText, 10, 20)
+          PDF.text($scope.register.hostText, 10, 30)
+          PDF.text($scope.register.companyText, 10, 40)
+          PDF.addImage($scope.camera.picture, 'JPEG', 20, 40, 50, 50)
+          $scope.register.pdf = PDF.output('datauristring')
+          //PDF.save('my-pdf.pdf')
+          requestService.post('http://10.110.20.36:3000/image', {
+            name: $scope.register.nameText,
+            email: $scope.register.emailText,
+            host: $scope.register.hostText,
+            company: $scope.register.companyText,
+            pdf: $scope.register.pdf
+          }).then(res => {
+             printJS(`http://10.110.20.36:3000/${res.data.url}`, 'pdf') // Should we use this or the native one?
+             //PDF.autoPrint()
+          }).catch(err => {
+            alert(err.error)
+          })
+        },
+        $scope.displayResult = function() {
           $scope.register.picture = $scope.camera.picture
           console.log($scope.register)
           $scope.state.showFinalResult = true
@@ -107,7 +133,7 @@ angular.module('welcomeApp', [])
         }
       }]
     }
-  })
+  }])
   .directive('myIntro', function() {
     return {
       restric: 'E',
@@ -121,16 +147,17 @@ angular.module('welcomeApp', [])
           console.log('💩')
           $scope.state.showWelcome = false
           $scope.state.showLoading = true
+          $scope.state.showCapture = true
           // TODO: display loading...
           Webcam.snap(function(data_uri) {
             //alert(data_uri)
             // TODO: remove loading...
-            alert(data_uri)
-            $scope.camera.picture = data_uri
-            $scope.state.showLoading = false
-            $scope.state.showCapture = true
-            $scope.camera.showCamera = false
-            $scope.camera.showPicture = true
+            $scope.$apply(function() {
+              $scope.camera.picture = data_uri
+              $scope.state.showLoading = false
+              $scope.camera.showCamera = false
+              $scope.camera.showPicture = true
+            })
           })
         }
       }]
