@@ -1,5 +1,7 @@
 const
-  jsonfile = require("jsonfile"),
+  getRawBody = require('raw-body'),
+  jsonfile = require("jsonfile"), 
+  request = require('request'),
   fs = require("fs")
 
 module.exports = {

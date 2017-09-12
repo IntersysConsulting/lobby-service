@@ -1,6 +1,5 @@
 const 
   bodyParser = require('body-parser'),
-  getRawBody = require('raw-body'),
   handler = require("./handler"),
   express = require('express'),
   request = require("request"),
