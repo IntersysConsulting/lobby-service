@@ -25,6 +25,10 @@ app.post('/image', handler.postImage)
 app.put('/upload', handler.putUpload)
 
 app.get('/log', handler.getLog)
+app.use('/images', express.static('images'))
+app.get('/personal', handler.personalInit)
+app.get('/search', handler.personalSearch)
+app.get('/badge', handler.badge)
 
 app.listen(3000, () => {
   console.log('Lobby Service is running.')
