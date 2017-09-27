@@ -1,6 +1,6 @@
 const 
   bodyParser = require('body-parser'),
-  handler = require("./handler"),
+  handler = require("./src/handler"),
   express = require('express'),
   request = require("request"),
   app = express()
