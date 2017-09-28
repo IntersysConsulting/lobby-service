@@ -1,15 +1,15 @@
 const 
+    config = require('../config/config'),
     webshot = require('webshot'),
+    request = require('request'),    
     pug = require('pug'),
     fs = require('fs'),
     PUG_TEMPLATE_FILE_PATH = './templates/badge.pug',
-    URL_TO_PRINTING_SERVICE = 'http://10.1.2.32/printer-helper-net/api/Print',
+    URL_TO_PRINTING_SERVICE = process.env.PRINT_ENDPOINT || config.PRINT_ENDPOINT,
 
 
-    bodyRequestToPngFile = (path, body) => new Promise(
+    bodyRequestToFile = (path, body) => new Promise(
         (resolve, reject) => {
-
-            //console.log('Wow, such debugging', body)
             fs.writeFile(path, body, err => {
                 if (err) {
                     return reject(err)
@@ -36,23 +36,22 @@ const
 
     printImageOnThermalPrinter = (image64) => new Promise(
         (resolve, reject) => {
-            try {
-                request({
-                    method: 'POST',
-                    url: URL_TO_PRINTING_SERVICE,
-                    headers: { 'content-type': 'application/json' },
-                    data: { image64 }
-                }, (error, res, body) => {
-                    if (error) {
-                        return reject(error)
-                    }
-    
-                    resolve(body)
-                })
-            }
-            catch(err) {
-                return reject(err)
-            }
+            request({
+                method: 'POST',
+                url: URL_TO_PRINTING_SERVICE,
+                headers: { 'content-type': 'application/json' },
+                data: { image64 }
+            }, (error, res, body) => {
+                if (error) {
+                    return reject(error)
+                }
+
+                if (res && res.statusCode !== 200) {
+                    return reject( new Error(`HTTP ${res.statusCode}: ${body || 'Something went wrong while trying to send to Print Service.'}`) )
+                }
+
+                resolve(body)
+            })
         }
     )
 
@@ -70,7 +69,7 @@ const
     )
 
     module.exports = {
-        bodyRequestToPngFile,
+        bodyRequestToFile,
         renderImageFromHtml,
         printImageOnThermalPrinter,
         imageToBase64

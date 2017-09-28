@@ -75,14 +75,12 @@ module.exports = {
           image: `http://localhost:3000/images/${req.query.email}.png`
         }
 
-
-    
-    helper.bodyRequestToPngFile(`./images/${visitor.email}.png`, req.body)
+    helper.bodyRequestToFile(`./images/${visitor.email}.png`, req.body)
       .then( () => helper.renderImageFromHtml(visitor, `./src/${visitor.email}.png`) )
       .then( () => helper.imageToBase64(`./src/${visitor.email}.png`) )
       .then( helper.printImageOnThermalPrinter )
       .then(response => {
-        console.log('Wow, such debugging response', response)
+        console.log(`Image of visitor '${visitor.name}' sent succesfully to printing service.`)
         return response
       })
       .then(() => {
@@ -92,6 +90,7 @@ module.exports = {
         }))
       })
       .catch( err => {
+        console.error(err)
         return res.status(500).send()
       })
     
@@ -100,60 +99,6 @@ module.exports = {
     let logFile = jsonfile.readFileSync('./log.json')
     logFile.push(visitor)
     jsonfile.writeFileSync('./log.json', logFile)
-
-
-
-
-
-    // fs.writeFile(`./images/${JSON.parse(req.query.json).email}.png`, req.body, err => {
-
-
-    //   if (err) {
-    //     return res.status(500).send()
-    //   }
-
-    //   let logFile = jsonfile.readFileSync('./log.json'),
-    //     json = JSON.parse(req.query.json),
-    //     currentUser = {
-    //       name: json.name,
-    //       email: json.email,
-    //       host: json.host,
-    //       company: json.company,
-    //       career: json.career,
-    //       image: `http://localhost:3000/images/${json.email}.png`
-    //     }
-    //   logFile.push(currentUser)
-    //   jsonfile.writeFileSync('./log.json', logFile)
-    //   /**
-    //    * PRINT HERE.
-    //    */
-    //   let 
-    //     html = generateBadge(currentUser), 
-    //     lePath = path.resolve(__dirname, './bin/printhtml.exe'),
-    //     cmd = `${lePath} url="http://localhost:3000/badge?name=${currentUser.name}&company=${currentUser.company}&image=${currentUser.image}" nopreserve title="" header="" footer=""`
-    //   execFile(cmd, (err, stdout, stderr) => {
-    //     if (err) {
-    //       console.log(err)
-    //       return res.status(500).send(JSON.stringify({ status: 'error', error: err }));
-    //     }
-    //     request({
-    //       method: 'POST',
-    //       url: process.env.SLACK_URL,
-    //       headers: { 'content-type': 'application/x-www-form-urlencoded' },
-    //       form: {
-    //         token: process.env.SLACK_TOKEN,
-    //         channel: process.env.SLACK_CHANNEL,
-    //         text: `Hey, ${json.host}! ${json.name} is waiting for you in the lobby!`,
-    //         as_user: 'true'
-    //       }
-    //     }, (error, res, body) => {
-    //       if (error) throw new Error(error)
-    //       console.log(body)
-    //     })
-
-    //     res.status(200).send(JSON.stringify({ status: 'ok' }))
-    //   })
-    // })
   },
 
 
