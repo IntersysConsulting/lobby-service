@@ -40,7 +40,7 @@ const
                 method: 'POST',
                 url: URL_TO_PRINTING_SERVICE,
                 headers: { 'content-type': 'application/json' },
-                body: { image64 }
+                body: JSON.stringify({ image64 })
             }, (error, res, body) => {
                 if (error) {
                     return reject(error)
