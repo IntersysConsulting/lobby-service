@@ -22,9 +22,10 @@ const
 
     renderImageFromHtml = (data, filePath) => {
         comPug = pug.compileFile(PUG_TEMPLATE_FILE_PATH)
-        
+        console.log("Rendering HTML.")
         return new Promise( (resolve, reject) => {
-            webshot( comPug(data), filePath, { siteType:'html' }, function(err) {
+            webshot(comPug(data), filePath, {
+                windowSize: { width: 500, height: 200 }, siteType:'html' }, function(err) {
                 if (err) {
                     return reject(`File couldn't be rendered or saved: ${err}`)
                 }
@@ -46,7 +47,7 @@ const
                     return reject(error)
                 }
 
-                if (res && res.statusCode !== 200) {
+                if (res && res.statusCode !== 201) {
                     return reject( new Error(`HTTP ${res.statusCode}: ${body || 'Something went wrong while trying to send to Print Service.'}`) )
                 }
 
@@ -58,6 +59,7 @@ const
 
     imageToBase64 = filePath => new Promise(
         (resolve, reject) => {
+            console.log("Converting image to base64.")
             fs.readFile(filePath, (err, bitmap) => {
                 if (err) {
                     return reject(err)
