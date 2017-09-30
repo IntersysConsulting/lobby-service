@@ -65,15 +65,15 @@ module.exports = {
 
 
   putUpload: (req, res) => {
-
-    let visitor = {
-          name: req.query.name,
-          email: req.query.email,
-          host: req.query.host,
-          company: req.query.company,
-          career: req.query.career,
-          image: `http://localhost:3000/images/${req.query.email}.png`
-        }
+    let json = JSON.parse(req.query.json), visitor = {
+      name: json.name,
+      email: json.email,
+      host: json.host,
+      company: json.company,
+      career: json.career,
+      image: `http://localhost:3000/images/${json.email}.png`
+    }
+    console.log(json)
 
     helper.bodyRequestToFile(`./images/${visitor.email}.png`, req.body)
       .then( () => helper.renderImageFromHtml(visitor, `./src/${visitor.email}.png`) )
