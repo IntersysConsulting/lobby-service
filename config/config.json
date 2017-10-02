@@ -1,0 +1,4 @@
+{
+    "PORT": 3000,
+    "PRINT_ENDPOINT": "http://localhost:50807/api/Print"
+}
