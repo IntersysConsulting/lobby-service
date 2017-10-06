@@ -6,6 +6,7 @@ html(lang="en")
   body
     div(id="container" style="position:relative;border:1px solid #fff;width:300px;height:120px;margin: 10px auto;")
       img(src=image, alt="user-image" width="100px" height="100px" style="-webkit-transform: rotate(90deg);border-radius:100%;float:left;margin:10px 10px 5px -15px;border: 2px solid #116cb4;")
-      div(style="margin-top:10px;")
-        p(style="font-family: 'Dosis', sans-serif;margin:0;padding:0;") Hi, I'am <strong>#{name}</strong> from <strong>#{company}</strong>.
-      img(src="http://localhost:3000/images/intersys.logo.gray.png", alt="intersys-logo", width="150px" height="27px" style="position: absolute; right: 0; bottom: 0;")
+      div(style="margin-top:-5px;")
+        p(style="text-align:center;") 
+          img(src="http://localhost:3000/images/intersys.logo.dark.png", style="margin:-5px 0px;padding:0px;" alt="intersys-logo", width="150px" height="30px")
+        p(style="font-family: 'Arial', sans-serif;margin:0;padding:0;text-align:justify;") Hi, I'am <strong>#{name}</strong> with <strong>#{company}</strong>. I'm here to visit <strong>#{host}</strong>.
