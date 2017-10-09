@@ -22,10 +22,10 @@ const
 
     renderImageFromHtml = (data, filePath) => {
         comPug = pug.compileFile(PUG_TEMPLATE_FILE_PATH)
-        console.log("Rendering HTML.")
+        console.log("Rendering HTML.", data)
         return new Promise( (resolve, reject) => {
             webshot(comPug(data), filePath, {
-                windowSize: { width: 500, height: 200 }, siteType:'html' }, function(err) {
+                windowSize: { width: 350, height: 140 }, siteType:'html' }, function(err) {
                 if (err) {
                     return reject(`File couldn't be rendered or saved: ${err}`)
                 }

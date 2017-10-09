@@ -8,7 +8,7 @@ const
   PORT = process.env.PORT || config.PORT
 
 
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: false, limit: 500*1024*1024*1024}))
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true, limit: '5000mb'}))
 //app.use(bodyParser.json({limit: '5mb'}))
 app.use(express.static('app'))
 
